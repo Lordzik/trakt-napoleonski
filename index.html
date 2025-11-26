@@ -22,7 +22,7 @@
         }
         
         h1, h2, h3, .point-title {
-            font-family: 'Merriweather', serif;
+            font-family: 'Open Sans', serif;
         }
         
         .container {
@@ -31,12 +31,11 @@
         }
         
         .sidebar {
-            width: 400px;
+            width: 380px;
             background: linear-gradient(to bottom, #8d6e63, #6d4c41);
             color: #fff;
             overflow-y: auto;
-            padding: 20px;
-            box-shadow: 2px 0 10px rgba(0,0,0,0.3);
+            padding: 15px;
             z-index: 1000;
             position: relative;
         }
@@ -46,13 +45,12 @@
             padding: 15px;
             border-radius: 8px;
             margin-bottom: 20px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-            border-left: 5px solid #d7ccc8;
+            border-left: 4px solid #d7ccc8;
         }
         
         .intro h1 {
-            font-size: 1.4rem;
-            margin-bottom: 12px;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
             color: #efebe9;
             text-align: center;
             border-bottom: 1px solid #8d6e63;
@@ -60,10 +58,10 @@
         }
         
         .intro p {
-            font-size: 0.95rem;
-            line-height: 1.6;
+            font-size: 0.85rem;
+            line-height: 1.5;
             text-align: justify;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
         
         .read-more {
@@ -75,62 +73,67 @@
             background: #8d6e63;
             color: white;
             border: none;
-            padding: 8px 15px;
-            border-radius: 20px;
+            padding: 6px 12px;
+            border-radius: 15px;
             cursor: pointer;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
+            font-size: 0.8rem;
+            transition: all 0.2s ease;
         }
         
         .read-more-btn:hover {
             background: #a1887f;
-            transform: translateY(-2px);
         }
         
         .search-box {
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             position: relative;
         }
         
         .search-box input {
             width: 100%;
-            padding: 10px 15px;
-            border-radius: 25px;
+            padding: 8px 12px;
+            border-radius: 15px;
             border: none;
             background-color: #d7ccc8;
             color: #5d4037;
-            font-size: 0.9rem;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            font-size: 0.8rem;
             font-family: 'Open Sans', sans-serif;
         }
         
         .search-box i {
             position: absolute;
-            right: 15px;
+            right: 12px;
             top: 50%;
             transform: translateY(-50%);
             color: #8d6e63;
         }
         
         .timeline {
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             background-color: #5d4037;
-            padding: 15px;
+            padding: 12px;
             border-radius: 8px;
-            font-size: 0.8rem;
-            box-shadow: 0 3px 5px rgba(0,0,0,0.2);
+            font-size: 0.75rem;
         }
         
         .timeline h3 {
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
+            font-size: 0.9rem;
+        }
+        
+        .timeline-value {
+            background: #8d6e63;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-weight: bold;
         }
         
         .timeline-slider {
             width: 100%;
-            height: 10px;
+            height: 8px;
             background: #d7ccc8;
             border-radius: 5px;
             outline: none;
@@ -139,35 +142,34 @@
         
         .timeline-slider::-webkit-slider-thumb {
             -webkit-appearance: none;
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
             border-radius: 50%;
             background: #8d6e63;
             cursor: pointer;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            border: 2px solid #efebe9;
         }
         
         .timeline-years {
             display: flex;
             justify-content: space-between;
             margin-top: 5px;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: #d7ccc8;
         }
         
         .points-list {
-            margin-top: 20px;
+            margin-top: 15px;
         }
         
         .point-header {
             background-color: #a1887f;
             margin-bottom: 5px;
-            padding: 15px;
+            padding: 12px;
             border-radius: 8px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 3px 5px rgba(0,0,0,0.2);
-            border-left: 4px solid #5d4037;
+            transition: all 0.2s ease;
+            border-left: 3px solid #5d4037;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -175,29 +177,27 @@
         
         .point-header:hover {
             background-color: #bcaaa4;
-            transform: translateY(-2px);
         }
         
         .point-header.active {
             background-color: #d7ccc8;
             color: #4e342e;
-            border-left: 4px solid #3e2723;
+            border-left: 3px solid #3e2723;
         }
         
         .point-title {
             font-weight: bold;
-            font-size: 1.1rem;
             display: flex;
             align-items: center;
-            gap: 10px;
-            font-size: 0.9rem;
+            gap: 8px;
+            font-size: 0.85rem;
         }
         
         .point-number {
             background-color: #5d4037;
             color: white;
-            width: 25px;
-            height: 25px;
+            width: 22px;
+            height: 22px;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -213,25 +213,26 @@
             max-height: 0;
             overflow: hidden;
             transition: all 0.3s ease;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
         
         .point-content.expanded {
-            padding: 15px;
+            padding: 12px;
             max-height: 1000px;
         }
         
         .point-description {
-            font-size: 0.9rem;
-            line-height: 1.5;
+            font-size: 0.8rem;
+            line-height: 1.4;
             margin-bottom: 10px;
+            text-align: justify;
         }
         
         .point-meta {
             display: flex;
             flex-direction: column;
             gap: 5px;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: #d7ccc8;
             margin-bottom: 10px;
         }
@@ -242,45 +243,24 @@
             gap: 5px;
         }
         
-        .image-placeholder {
-            width: 100%;
-            height: 150px;
-            background-color: #bcaaa4;
-            margin-top: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #5d4037;
-            font-style: italic;
-            border-radius: 5px;
-            border: 1px dashed #8d6e63;
-        }
-        
         .point-image {
             width: 100%;
-            max-height: 150px;
+            max-height: 140px;
             object-fit: cover;
             border-radius: 5px;
-            margin-top: 10px;
-            box-shadow: 0 3px 6px rgba(0,0,0,0.2);
-            cursor: pointer;
-            transition: transform 0.3s ease;
-        }
-        
-        .point-image:hover {
-            transform: scale(1.02);
+            margin-top: 8px;
         }
         
         .point-images-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            margin-top: 10px;
+            gap: 6px;
+            margin-top: 8px;
         }
         
         .point-images-grid .point-image {
             margin-top: 0;
-            max-height: 120px;
+            max-height: 100px;
         }
         
         .map-container {
@@ -295,38 +275,38 @@
         }
         
         .custom-popup {
-            max-width: 300px;
+            max-width: 280px;
         }
         
         .popup-title {
             font-weight: bold;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             color: #5d4037;
-            font-size: 1.1rem;
+            font-size: 0.95rem;
             border-bottom: 1px solid #d7ccc8;
-            padding-bottom: 5px;
+            padding-bottom: 4px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
         
         .popup-number {
             background-color: #5d4037;
             color: white;
-            width: 25px;
-            height: 25px;
+            width: 22px;
+            height: 22px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             font-weight: bold;
         }
         
         .popup-description {
-            font-size: 0.9rem;
-            line-height: 1.5;
-            margin-bottom: 10px;
+            font-size: 0.8rem;
+            line-height: 1.4;
+            margin-bottom: 8px;
         }
         
         .popup-image {
@@ -334,56 +314,48 @@
             max-height: 120px;
             object-fit: cover;
             border-radius: 5px;
-            margin-bottom: 8px;
-            box-shadow: 0 3px 6px rgba(0,0,0,0.2);
-            cursor: pointer;
-            transition: transform 0.3s ease;
-        }
-        
-        .popup-image:hover {
-            transform: scale(1.02);
+            margin-bottom: 6px;
         }
         
         .popup-images-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 6px;
-            margin-bottom: 10px;
+            gap: 5px;
+            margin-bottom: 8px;
         }
         
         .popup-images-grid .popup-image {
             margin-bottom: 0;
-            max-height: 100px;
+            max-height: 90px;
         }
         
         .legend {
             position: absolute;
-            bottom: 20px;
-            right: 20px;
+            bottom: 15px;
+            right: 15px;
             background: rgba(141, 110, 99, 0.9);
-            padding: 10px;
+            padding: 8px;
             border-radius: 5px;
             color: white;
             z-index: 1000;
-            box-shadow: 0 0 10px rgba(0,0,0,0.3);
-            transition: all 0.3s ease;
         }
         
         .legend h3 {
-            margin-bottom: 8px;
-            font-size: 1rem;
+            margin-bottom: 6px;
+            font-size: 0.85rem;
+            text-align: center;
         }
         
         .legend-item {
             display: flex;
             align-items: center;
-            margin-bottom: 5px;
+            margin-bottom: 4px;
         }
         
         .legend-color {
-            width: 20px;
-            height: 20px;
-            margin-right: 8px;
+            width: 16px;
+            height: 16px;
+            margin-right: 6px;
             border-radius: 50%;
         }
         
@@ -397,12 +369,12 @@
         
         .map-controls {
             position: absolute;
-            top: 20px;
-            left: 50px;
+            top: 15px;
+            left: 70px;
             z-index: 1000;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
         }
         
         .control-btn {
@@ -410,48 +382,45 @@
             color: white;
             border: none;
             border-radius: 5px;
-            padding: 10px 15px;
+            padding: 8px 12px;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            transition: all 0.3s ease;
+            gap: 6px;
+            transition: all 0.2s ease;
             font-family: 'Open Sans', sans-serif;
+            font-size: 0.8rem;
         }
         
         .control-btn:hover {
             background: rgba(141, 110, 99, 1);
-            transform: translateY(-2px);
         }
         
         .route-info-map {
             position: absolute;
-            bottom: 20px;
-            left: 20px;
+            bottom: 15px;
+            left: 15px;
             background: rgba(141, 110, 99, 0.9);
-            padding: 15px;
-            border-radius: 8px;
+            padding: 10px;
+            border-radius: 6px;
             color: white;
             z-index: 1000;
-            box-shadow: 0 0 10px rgba(0,0,0,0.3);
-            width: 200px;
-            transition: all 0.3s ease;
+            width: 160px;
         }
         
         .route-info-map h3 {
-            margin-bottom: 10px;
+            margin-bottom: 6px;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            font-size: 1rem;
+            gap: 6px;
+            font-size: 0.85rem;
         }
         
         .route-stats {
             display: flex;
             justify-content: space-around;
-            margin-top: 10px;
+            margin-top: 6px;
         }
         
         .stat {
@@ -459,14 +428,28 @@
         }
         
         .stat-value {
-            font-size: 1.2rem;
+            font-size: 1rem;
             font-weight: bold;
             color: #d7ccc8;
         }
         
         .stat-label {
-            font-size: 0.8rem;
+            font-size: 0.7rem;
             color: #bcaaa4;
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(141, 110, 99, 0.9);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 8px;
+            cursor: pointer;
+            z-index: 1100;
         }
         
         .modal {
@@ -484,12 +467,11 @@
         
         .modal-content {
             background-color: #f5f1e8;
-            padding: 30px;
-            border-radius: 10px;
-            max-width: 800px;
+            padding: 25px;
+            border-radius: 8px;
+            max-width: 700px;
             max-height: 90vh;
             overflow-y: auto;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
             color: #3e2723;
         }
         
@@ -497,13 +479,13 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
-            border-bottom: 2px solid #8d6e63;
-            padding-bottom: 10px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #8d6e63;
+            padding-bottom: 8px;
         }
         
         .modal-title {
-            font-size: 1.8rem;
+            font-size: 1.4rem;
             color: #5d4037;
             margin: 0;
         }
@@ -511,38 +493,37 @@
         .close-btn {
             background: none;
             border: none;
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             cursor: pointer;
             color: #8d6e63;
         }
         
         .modal-text {
-            line-height: 1.7;
-            font-size: 1rem;
+            line-height: 1.6;
+            font-size: 0.9rem;
         }
         
         .modal-images {
             display: flex;
             flex-wrap: wrap;
-            gap: 15px;
-            margin: 20px 0;
+            gap: 12px;
+            margin: 15px 0;
             justify-content: center;
         }
         
         .modal-image {
             max-width: 100%;
             border-radius: 5px;
-            box-shadow: 0 3px 6px rgba(0,0,0,0.2);
         }
         
         .modal-image-container {
             flex: 1;
-            min-width: 300px;
+            min-width: 250px;
             text-align: center;
         }
         
         .modal-image-caption {
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             color: #5d4037;
             margin-top: 5px;
             font-style: italic;
@@ -576,7 +557,7 @@
         
         .image-modal-close {
             position: absolute;
-            top: -40px;
+            top: -35px;
             right: 0;
             background: none;
             border: none;
@@ -594,6 +575,12 @@
             .sidebar {
                 width: 100%;
                 height: 40vh;
+                transform: translateY(0);
+                transition: transform 0.3s ease;
+            }
+            
+            .sidebar.hidden {
+                transform: translateY(-100%);
             }
             
             .map-container {
@@ -601,19 +588,19 @@
             }
             
             .route-info-map {
-                display: none; /* Ukrywamy informacje o trasie na urządzeniach mobilnych */
+                display: none;
             }
             
             .legend {
                 bottom: 10px;
                 right: 10px;
-                padding: 8px;
-                max-width: 150px;
+                padding: 6px;
+                max-width: 140px;
             }
             
             .legend h3 {
-                font-size: 0.9rem;
-                margin-bottom: 5px;
+                font-size: 0.8rem;
+                margin-bottom: 4px;
             }
             
             .legend-item {
@@ -621,22 +608,27 @@
             }
             
             .legend-color {
-                width: 15px;
-                height: 15px;
+                width: 14px;
+                height: 14px;
                 margin-right: 5px;
             }
             
             .legend span {
-                font-size: 0.8rem;
+                font-size: 0.75rem;
             }
             
             .map-controls {
-                display: none; /* Ukrywamy kontrolki na urządzeniach mobilnych */
+                display: none;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
             }
             
             .modal-content {
                 max-width: 95%;
                 padding: 20px;
+                margin: 15px;
             }
             
             .modal-image-container {
@@ -648,35 +640,43 @@
                 grid-template-columns: 1fr;
             }
             
-            /* Ukrywamy współrzędne w popupach na urządzeniach mobilnych */
-            .popup-coordinates {
-                display: none;
-            }
-            
-            .popup-google-maps {
-                display: none;
+            /* Ukrywamy popupy na urządzeniach mobilnych */
+            .leaflet-popup {
+                display: none !important;
             }
         }
         
         @media (max-width: 480px) {
             .legend {
-                max-width: 130px;
-                padding: 6px;
+                max-width: 120px;
+                padding: 5px;
             }
             
             .legend h3 {
-                font-size: 0.8rem;
+                font-size: 0.75rem;
             }
             
             .legend span {
                 font-size: 0.7rem;
+            }
+            
+            .sidebar {
+                padding: 10px;
+            }
+            
+            .intro {
+                padding: 12px;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="sidebar">
+        <button class="mobile-menu-btn" id="mobileMenuBtn">
+            <i class="fas fa-bars"></i>
+        </button>
+        
+        <div class="sidebar" id="sidebar">
             <div class="intro">
                 <h1>Trakt Napoleoński - Historyczna Trasa</h1>
                 <p>W przeszłych wiekach z Kamieńca w stronę stolicy prowadził trakt, który odegrał istotną rolę w dziejach regionu...</p>
@@ -693,14 +693,13 @@
             </div>
             
             <div class="timeline">
-                <h3><i class="fas fa-history"></i> Oś Czasu rok:<div id="timelineValue" style="">1800</div></h3>
-                <input type="range" min="1800" max="2000" value="1900" class="timeline-slider" id="timelineSlider">
+                <h3><i class="fas fa-history"></i> Oś Czasu rok: <span class="timeline-value" id="timelineValue">1800</span></h3>
+                <input type="range" min="1800" max="2000" value="1800" class="timeline-slider" id="timelineSlider">
                 <div class="timeline-years">
                     <span>1800</span>
                     <span>1900</span>
                     <span>2000</span>
                 </div>
-                
             </div>
             
             <div class="points-list" id="pointsList">
@@ -789,7 +788,7 @@
                     </div>
                 </div>
                 
-                <p>Traktem podróżowali kupcy, dostojnicy państwowi, ale nie tylko. Liczne stare artefakty potwierdzają, że droga często wykorzystywana była przez maszerujące armie, m.in. w okresie potopu szwedzkiego, ale również w wiekach późniejszych. Temu właśnie szlak zawdzięcza swą potoczną nazwę „traktu napoleońskiego”, gdyż miała tędy przechodzić m.in. maszerująca przeciw Rosji armia francuska.</p>
+                <p>Traktem podróżowali kupcy, dostojnicy państwowi, ale nie tylko. Liczne stare artefakty potwierdzają, że droga często wykorzystywana była przez maszerujące armie, m.in. w okresie potopu szwedzkiego, ale również w wiekach późniejszych. Temu właśnie szlak zawdzięcza swą potoczną nazwę „traktu napoleońskiego", gdyż miała tędy przechodzić m.in. maszerująca przeciw Rosji armia francuska.</p>
                 
                 <p>Również i później podążały tędy wojska powstańcze oraz, w okresie ostatniej wojny, oddziały partyzanckie. Uczęszczany trakt niewątpliwie miał wpływ na rozwój osadnictwa w regionie. W jego pobliżu w XVIII i XIX wieku powstały liczne miejscowości z niezwykle też często barwną historią.</p>
                 
@@ -820,7 +819,7 @@
             attribution: 'Tiles &copy; Esri'
         });
 
-        // Punkty na mapie w kolejności geograficznej (tworzące trasę)
+        // Punkty na mapie
         const points = [
             {
                 id: 1,
@@ -833,7 +832,7 @@
                 type: "historical",
                 year: 1850,
                 category: "budynki",
-                image: null // Brak zdjęcia
+                image: null
             },
             {
                 id: 2,
@@ -858,11 +857,11 @@
                 lat: 52.5439,
                 lng: 21.4836,
                 coordinates: "52°32'38\"N 21°29'01\"E",
-                description: "W pobliżu karczmy funkcjonowała kuźnia, w której podróżni mogli naprawić wóz czy podkuć konie. W niedalekiej odległości znajduje się sosna, pod którą rzekomo miał odpoczywać Napoleon. Wedle jednej z legend, koń cesarza zgubił tu podkowę, którą następnie odnaleziono i przybito do sosny.",
+                description: "W pobliżu karczmy funkcjonowała kuźnia, w której podróżni mogli naprawić wóz czy podkuć konie. W niedalekiej odległości znajduje się sosna, pod którą rzekomo miał odpoczywać Napoleon. Wedle jednej z legend, koń cesarza zgubił tu podkowę, którą następnie odnalezono i przybito do sosny.",
                 type: "historical",
                 year: 1820,
                 category: "budynki",
-                image: null // Brak zdjęcia
+                image: null
             },
             {
                 id: 4,
@@ -875,7 +874,7 @@
                 type: "nature",
                 year: 1850,
                 category: "budynki",
-                image: null // Brak zdjęcia
+                image: null
             },
             {
                 id: 5,
@@ -888,7 +887,7 @@
                 type: "historical",
                 year: 1850,
                 category: "przemysł",
-                image: null // Usunięte zdjęcie ze smolarni
+                image: null
             },
             {
                 id: 6,
@@ -930,22 +929,21 @@
                 html: `
                     <div style="
                         background-color: ${iconColors[type]}; 
-                        width: 30px; 
-                        height: 30px; 
+                        width: 28px; 
+                        height: 28px; 
                         border-radius: 50%; 
-                        border: 3px solid white; 
-                        box-shadow: 0 0 5px rgba(0,0,0,0.5);
+                        border: 2px solid white; 
                         display: flex;
                         align-items: center;
                         justify-content: center;
                         color: white;
                         font-weight: bold;
-                        font-size: 14px;
+                        font-size: 12px;
                     ">${number}</div>
                 `,
                 className: 'custom-marker',
-                iconSize: [30, 30],
-                iconAnchor: [15, 15]
+                iconSize: [28, 28],
+                iconAnchor: [14, 14]
             });
         }
 
@@ -960,7 +958,6 @@
             const imageModalImg = document.getElementById('imageModalImg');
             const imageModalClose = document.getElementById('imageModalClose');
             
-            // Dodanie obsługi kliknięcia na wszystkie obrazki
             document.addEventListener('click', function(e) {
                 if (e.target.classList.contains('point-image') || e.target.classList.contains('popup-image')) {
                     imageModalImg.src = e.target.src;
@@ -985,7 +982,7 @@
                 icon: createIcon(point.type, point.number)
             }).addTo(map);
             
-            // Tworzenie zawartości popupu - uproszczonej na urządzenia mobilne
+            // Tworzenie zawartości popupu
             let popupContent = `
                 <div class="custom-popup">
                     <div class="popup-title">
@@ -993,7 +990,6 @@
                         ${point.title}
                     </div>`;
             
-            // Dodawanie obrazków do popupu
             if (point.images && point.images.length > 0) {
                 if (point.images.length === 1) {
                     popupContent += `<img src="${point.images[0]}" alt="${point.title}" class="popup-image">`;
@@ -1008,15 +1004,14 @@
                 popupContent += `<img src="${point.image}" alt="${point.title}" class="popup-image">`;
             }
             
-            // Dodajemy klasy do ukrycia na urządzeniach mobilnych
             popupContent += `
                     <div class="popup-description">${point.description}</div>
-                    <div style="font-size: 0.8rem; color: #8d6e63; margin-top: 5px;">
+                    <div style="font-size: 0.75rem; color: #8d6e63; margin-top: 6px;">
                         <div><i class="fas fa-calendar-alt"></i> Ok. ${point.year} r.</div>
                         <div class="popup-coordinates"><i class="fas fa-map-marker-alt"></i> ${point.coordinates}</div>
                         <div class="popup-google-maps">
-                            <a href="${generateGoogleMapsLink(point.lat, point.lng)}" target="_blank" style="color: #8d6e63; text-decoration: none; display: inline-flex; align-items: center; gap: 5px;">
-                                <i class="fas fa-external-link-alt"></i> Otwórz w Google Maps
+                            <a href="${generateGoogleMapsLink(point.lat, point.lng)}" target="_blank" style="color: #8d6e63; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; margin-top: 4px;">
+                                <i class="fas fa-external-link-alt"></i> Prowadź do miejsca
                             </a>
                         </div>
                     </div>
@@ -1025,30 +1020,31 @@
             
             marker.bindPopup(popupContent);
             
-            // Przechowywanie referencji do markera
             markers.push({
                 id: point.id,
                 marker: marker,
                 data: point
             });
             
-            // Obsługa kliknięcia markera
             marker.on('click', function() {
                 highlightPointInMenu(point.id);
+                if (window.innerWidth > 768) {
+                    marker.openPopup();
+                }
             });
         });
 
-        // Rysowanie trasy pieszej/rowerowej (bardziej realistyczna trasa po drogach)
+        // Rysowanie trasy
         const routeCoordinates = [
-            [52.5456, 21.4842],  // Karczma
+            [52.5456, 21.4842],
             [52.5450, 21.4835],
             [52.5445, 21.4825],
             [52.5440, 21.4815],
             [52.5435, 21.4810],
-            [52.5433, 21.4806],  // Kapliczka
+            [52.5433, 21.4806],
             [52.5435, 21.4815],
             [52.5437, 21.4825],
-            [52.5439, 21.4836],  // Kuźnia
+            [52.5439, 21.4836],
             [52.5445, 21.4850],
             [52.5455, 21.4865],
             [52.5465, 21.4880],
@@ -1058,14 +1054,14 @@
             [52.5505, 21.4940],
             [52.5515, 21.4955],
             [52.5525, 21.4970],
-            [52.5533, 21.4981],  // Kuźnia w puszczy
+            [52.5533, 21.4981],
             [52.5540, 21.4990],
             [52.5550, 21.5005],
             [52.5560, 21.5020],
             [52.5570, 21.5035],
             [52.5580, 21.5050],
-            [52.5586, 21.5075],  // Smolarnia
-            [52.5594, 21.5075]   // Krzyże bitwy
+            [52.5586, 21.5075],
+            [52.5594, 21.5075]
         ];
 
         function drawRoute() {
@@ -1109,11 +1105,8 @@
                 highlightPointInMenu(point.id);
                 map.setView([point.lat, point.lng], 16);
                 
-                const marker = markers.find(m => m.id === point.id).marker;
-                marker.openPopup();
-                
                 currentRoutePoint++;
-                setTimeout(visitNextPoint, 5000); // 5 sekund na każdy punkt
+                setTimeout(visitNextPoint, 5000);
             }
             
             visitNextPoint();
@@ -1124,7 +1117,7 @@
             document.getElementById('followRouteBtn').innerHTML = '<i class="fas fa-play"></i> Przejdź trasę';
         }
 
-        // Dynamiczne tworzenie listy punktów (BEZ WSPÓŁRZĘDNYCH I LINKÓW)
+        // Dynamiczne tworzenie listy punktów
         function renderPointsList() {
             const pointsList = document.getElementById('pointsList');
             pointsList.innerHTML = '';
@@ -1132,7 +1125,6 @@
             points.forEach(point => {
                 let imagesHtml = '';
                 
-                // Dodawanie obrazków do punktu w menu
                 if (point.images && point.images.length > 0) {
                     if (point.images.length === 1) {
                         imagesHtml += `<img src="${point.images[0]}" alt="${point.title}" class="point-image">`;
@@ -1178,7 +1170,6 @@
                 pointsList.innerHTML += pointElement;
             });
             
-            // Dodanie obsługi kliknięć po renderowaniu
             addPointHeaderListeners();
         }
 
@@ -1200,13 +1191,11 @@
                     const content = document.querySelector(`.point-content[data-id="${pointId}"]`);
                     const arrow = this.querySelector('.arrow');
                     
-                    // Rozwijanie/zwijanie zawartości
                     if (content.classList.contains('expanded')) {
                         content.classList.remove('expanded');
                         arrow.classList.remove('expanded');
                         this.classList.remove('active');
                     } else {
-                        // Zamykanie wszystkich innych otwartych sekcji
                         document.querySelectorAll('.point-content').forEach(c => {
                             c.classList.remove('expanded');
                         });
@@ -1215,23 +1204,16 @@
                             h.querySelector('.arrow').classList.remove('expanded');
                         });
                         
-                        // Otwieranie wybranej sekcji
                         content.classList.add('expanded');
                         arrow.classList.add('expanded');
                         this.classList.add('active');
                         
-                        // Przewijanie do rozwiniętej sekcji
                         content.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                     }
                     
-                    // Przejście do punktu na mapie
                     const point = points.find(p => p.id === pointId);
                     if (point) {
                         map.setView([point.lat, point.lng], 16);
-                        
-                        // Otwarcie popupu
-                        const marker = markers.find(m => m.id === pointId).marker;
-                        marker.openPopup();
                     }
                 });
             });
@@ -1244,7 +1226,6 @@
                 if (parseInt(header.getAttribute('data-id')) === pointId) {
                     header.classList.add('active');
                     
-                    // Rozwinięcie zawartości jeśli jest zwinięta
                     const content = document.querySelector(`.point-content[data-id="${pointId}"]`);
                     const arrow = header.querySelector('.arrow');
                     if (!content.classList.contains('expanded')) {
@@ -1252,7 +1233,6 @@
                         arrow.classList.add('expanded');
                     }
                     
-                    // Przewijanie do aktywnego punktu
                     header.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 }
             });
@@ -1349,6 +1329,14 @@
             } else {
                 followRoute();
             }
+        });
+
+        // Mobile menu
+        document.getElementById('mobileMenuBtn').addEventListener('click', function() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('hidden');
+            this.innerHTML = sidebar.classList.contains('hidden') ? 
+                '<i class="fas fa-bars"></i>' : '<i class="fas fa-times"></i>';
         });
 
         // Inicjalizacja
