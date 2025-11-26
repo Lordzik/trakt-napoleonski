@@ -117,6 +117,7 @@
             background-color: #5d4037;
             padding: 15px;
             border-radius: 8px;
+            font-size: 0.8rem;
             box-shadow: 0 3px 5px rgba(0,0,0,0.2);
         }
         
@@ -600,10 +601,7 @@
             }
             
             .route-info-map {
-                width: 180px;
-                padding: 10px;
-                bottom: 10px;
-                left: 10px;
+                display: none; /* Ukrywamy informacje o trasie na urządzeniach mobilnych */
             }
             
             .legend {
@@ -649,26 +647,18 @@
             .popup-images-grid {
                 grid-template-columns: 1fr;
             }
+            
+            /* Ukrywamy współrzędne w popupach na urządzeniach mobilnych */
+            .popup-coordinates {
+                display: none;
+            }
+            
+            .popup-google-maps {
+                display: none;
+            }
         }
         
         @media (max-width: 480px) {
-            .route-info-map {
-                width: 150px;
-                padding: 8px;
-            }
-            
-            .route-info-map h3 {
-                font-size: 0.9rem;
-            }
-            
-            .stat-value {
-                font-size: 1rem;
-            }
-            
-            .stat-label {
-                font-size: 0.7rem;
-            }
-            
             .legend {
                 max-width: 130px;
                 padding: 6px;
@@ -703,14 +693,14 @@
             </div>
             
             <div class="timeline">
-                <h3><i class="fas fa-history"></i> Oś Czasu</h3>
+                <h3><i class="fas fa-history"></i> Oś Czasu rok:<div id="timelineValue" style="">1800</div></h3>
                 <input type="range" min="1800" max="2000" value="1900" class="timeline-slider" id="timelineSlider">
                 <div class="timeline-years">
                     <span>1800</span>
                     <span>1900</span>
                     <span>2000</span>
                 </div>
-                <div id="timelineValue" style="text-align: center; margin-top: 5px; font-size: 0.9rem;">Rok: 1800</div>
+                
             </div>
             
             <div class="points-list" id="pointsList">
@@ -803,7 +793,7 @@
                 
                 <p>Również i później podążały tędy wojska powstańcze oraz, w okresie ostatniej wojny, oddziały partyzanckie. Uczęszczany trakt niewątpliwie miał wpływ na rozwój osadnictwa w regionie. W jego pobliżu w XVIII i XIX wieku powstały liczne miejscowości z niezwykle też często barwną historią.</p>
                 
-                <p>Dziś śladami tego historycznego traktu prowadzi pieszo-rowerowa trasa turystyczna, która pozwala odkrywać bogactwo historii i przyrody tego regionu. Trasa o długości około 4.2 km prowadzi przez 6 kluczowych punktów historycznych, związanych z dziejami traktu и okolicznych miejscowości.</p>
+                <p>Dziś śladami tego historycznego traktu prowadzi pieszo-rowerowa trasa turystyczna, która pozwala odkrywać bogactwo historii i przyrody tego regionu. Trasa o długości około 4.2 km prowadzi przez 6 kluczowych punktów historycznych, związanych z dziejami traktu i okolicznych miejscowości.</p>
             </div>
         </div>
     </div>
@@ -995,7 +985,7 @@
                 icon: createIcon(point.type, point.number)
             }).addTo(map);
             
-            // Tworzenie zawartości popupu
+            // Tworzenie zawartości popupu - uproszczonej na urządzenia mobilne
             let popupContent = `
                 <div class="custom-popup">
                     <div class="popup-title">
@@ -1018,12 +1008,13 @@
                 popupContent += `<img src="${point.image}" alt="${point.title}" class="popup-image">`;
             }
             
+            // Dodajemy klasy do ukrycia na urządzeniach mobilnych
             popupContent += `
                     <div class="popup-description">${point.description}</div>
                     <div style="font-size: 0.8rem; color: #8d6e63; margin-top: 5px;">
                         <div><i class="fas fa-calendar-alt"></i> Ok. ${point.year} r.</div>
-                        <div><i class="fas fa-map-marker-alt"></i> ${point.coordinates}</div>
-                        <div>
+                        <div class="popup-coordinates"><i class="fas fa-map-marker-alt"></i> ${point.coordinates}</div>
+                        <div class="popup-google-maps">
                             <a href="${generateGoogleMapsLink(point.lat, point.lng)}" target="_blank" style="color: #8d6e63; text-decoration: none; display: inline-flex; align-items: center; gap: 5px;">
                                 <i class="fas fa-external-link-alt"></i> Otwórz w Google Maps
                             </a>
@@ -1174,6 +1165,10 @@
                                 <i class="fas fa-tag"></i>
                                 <span>${getCategoryName(point.category)}</span>
                             </div>
+                            <div class="meta-item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>${point.coordinates}</span>
+                            </div>
                         </div>
                         <div class="point-description">${point.description}</div>
                         ${imagesHtml}
@@ -1286,7 +1281,7 @@
         
         timelineSlider.addEventListener('input', function() {
             const year = parseInt(this.value);
-            timelineValue.textContent = `Rok: ${year}`;
+            timelineValue.textContent = `${year}`;
             
             markers.forEach(markerObj => {
                 const point = markerObj.data;
