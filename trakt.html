@@ -1,0 +1,1304 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trakt Napoleoński - Interaktywna Mapa Historyczna</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background-color: #f5f1e8;
+            color: #3e2723;
+            overflow: hidden;
+            font-family: 'Open Sans', sans-serif;
+        }
+        
+        h1, h2, h3, .point-title {
+            font-family: 'Merriweather', serif;
+        }
+        
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+        
+        .sidebar {
+            width: 400px;
+            background: linear-gradient(to bottom, #8d6e63, #6d4c41);
+            color: #fff;
+            overflow-y: auto;
+            padding: 20px;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.3);
+            z-index: 1000;
+            position: relative;
+        }
+        
+        .intro {
+            background-color: #5d4037;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            border-left: 5px solid #d7ccc8;
+        }
+        
+        .intro h1 {
+            font-size: 1.4rem;
+            margin-bottom: 12px;
+            color: #efebe9;
+            text-align: center;
+            border-bottom: 1px solid #8d6e63;
+            padding-bottom: 8px;
+        }
+        
+        .intro p {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            text-align: justify;
+            margin-bottom: 10px;
+        }
+        
+        .read-more {
+            text-align: center;
+            margin-top: 10px;
+        }
+        
+        .read-more-btn {
+            background: #8d6e63;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .read-more-btn:hover {
+            background: #a1887f;
+            transform: translateY(-2px);
+        }
+        
+        .search-box {
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 10px 15px;
+            border-radius: 25px;
+            border: none;
+            background-color: #d7ccc8;
+            color: #5d4037;
+            font-size: 0.9rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            font-family: 'Open Sans', sans-serif;
+        }
+        
+        .search-box i {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #8d6e63;
+        }
+        
+        .timeline {
+            margin-bottom: 20px;
+            background-color: #5d4037;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 3px 5px rgba(0,0,0,0.2);
+        }
+        
+        .timeline h3 {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .timeline-slider {
+            width: 100%;
+            height: 10px;
+            background: #d7ccc8;
+            border-radius: 5px;
+            outline: none;
+            -webkit-appearance: none;
+        }
+        
+        .timeline-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #8d6e63;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .timeline-years {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 5px;
+            font-size: 0.8rem;
+            color: #d7ccc8;
+        }
+        
+        .points-list {
+            margin-top: 20px;
+        }
+        
+        .point-header {
+            background-color: #a1887f;
+            margin-bottom: 5px;
+            padding: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 5px rgba(0,0,0,0.2);
+            border-left: 4px solid #5d4037;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .point-header:hover {
+            background-color: #bcaaa4;
+            transform: translateY(-2px);
+        }
+        
+        .point-header.active {
+            background-color: #d7ccc8;
+            color: #4e342e;
+            border-left: 4px solid #3e2723;
+        }
+        
+        .point-title {
+            font-weight: bold;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .point-number {
+            background-color: #5d4037;
+            color: white;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+        
+        .point-content {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 0;
+            border-radius: 0 0 8px 8px;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            margin-bottom: 10px;
+        }
+        
+        .point-content.expanded {
+            padding: 15px;
+            max-height: 1000px;
+        }
+        
+        .point-description {
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+        
+        .point-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            font-size: 0.8rem;
+            color: #d7ccc8;
+            margin-bottom: 10px;
+        }
+        
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .image-placeholder {
+            width: 100%;
+            height: 150px;
+            background-color: #bcaaa4;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #5d4037;
+            font-style: italic;
+            border-radius: 5px;
+            border: 1px dashed #8d6e63;
+        }
+        
+        .point-image {
+            width: 100%;
+            max-height: 150px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-top: 10px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        
+        .point-image:hover {
+            transform: scale(1.02);
+        }
+        
+        .point-images-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        
+        .point-images-grid .point-image {
+            margin-top: 0;
+            max-height: 120px;
+        }
+        
+        .map-container {
+            flex: 1;
+            height: 100%;
+            position: relative;
+        }
+        
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .custom-popup {
+            max-width: 300px;
+        }
+        
+        .popup-title {
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #5d4037;
+            font-size: 1.1rem;
+            border-bottom: 1px solid #d7ccc8;
+            padding-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .popup-number {
+            background-color: #5d4037;
+            color: white;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+        
+        .popup-description {
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+        
+        .popup-image {
+            width: 100%;
+            max-height: 120px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-bottom: 8px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        
+        .popup-image:hover {
+            transform: scale(1.02);
+        }
+        
+        .popup-images-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+            margin-bottom: 10px;
+        }
+        
+        .popup-images-grid .popup-image {
+            margin-bottom: 0;
+            max-height: 100px;
+        }
+        
+        .legend {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(141, 110, 99, 0.9);
+            padding: 10px;
+            border-radius: 5px;
+            color: white;
+            z-index: 1000;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+        }
+        .legend span {
+            
+        }
+        
+        .legend h3 {
+            margin-bottom: 8px;
+            font-size: 1rem;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            margin-right: 8px;
+            border-radius: 50%;
+        }
+        
+        .arrow {
+            transition: transform 0.3s ease;
+        }
+        
+        .arrow.expanded {
+            transform: rotate(180deg);
+        }
+        
+        .map-controls {
+            position: absolute;
+            top: 20px;
+            left: 50px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .control-btn {
+            background: rgba(141, 110, 99, 0.9);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            font-family: 'Open Sans', sans-serif;
+        }
+        
+        .control-btn:hover {
+            background: rgba(141, 110, 99, 1);
+            transform: translateY(-2px);
+        }
+        
+        .route-info-map {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(141, 110, 99, 0.9);
+            padding: 15px;
+            border-radius: 8px;
+            color: white;
+            z-index: 1000;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+            width: 200px;
+        }
+        
+        .route-info-map h3 {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 1rem;
+        }
+        
+        .route-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 10px;
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #d7ccc8;
+        }
+        
+        .stat-label {
+            font-size: 0.8rem;
+            color: #bcaaa4;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background-color: #f5f1e8;
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            color: #3e2723;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #8d6e63;
+            padding-bottom: 10px;
+        }
+        
+        .modal-title {
+            font-size: 1.8rem;
+            color: #5d4037;
+            margin: 0;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #8d6e63;
+        }
+        
+        .modal-text {
+            line-height: 1.7;
+            font-size: 1rem;
+        }
+        
+        .modal-images {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 20px 0;
+            justify-content: center;
+        }
+        
+        .modal-image {
+            max-width: 100%;
+            border-radius: 5px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+        }
+        
+        .modal-image-container {
+            flex: 1;
+            min-width: 300px;
+            text-align: center;
+        }
+        
+        .modal-image-caption {
+            font-size: 0.9rem;
+            color: #5d4037;
+            margin-top: 5px;
+            font-style: italic;
+        }
+        
+        .image-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+            z-index: 3000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .image-modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            position: relative;
+        }
+        
+        .image-modal-img {
+            max-width: 100%;
+            max-height: 90vh;
+            object-fit: contain;
+            border-radius: 5px;
+        }
+        
+        .image-modal-close {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                height: 40vh;
+            }
+            
+            .map-container {
+                height: 60vh;
+            }
+            
+            .route-info-map {
+                width: 180px;
+                padding: 10px;
+            }
+            
+            .modal-content {
+                max-width: 95%;
+                padding: 20px;
+            }
+            
+            .modal-image-container {
+                min-width: 100%;
+            }
+            
+            .point-images-grid,
+            .popup-images-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <div class="intro">
+                <h1>Trakt Napoleoński - Historyczna Trasa</h1>
+                <p>W przeszłych wiekach z Kamieńca w stronę stolicy prowadził trakt, który odegrał istotną rolę w dziejach regionu...</p>
+                <div class="read-more">
+                    <button class="read-more-btn" id="readMoreBtn">
+                        <i class="fas fa-book-open"></i> Czytaj więcej
+                    </button>
+                </div>
+            </div>
+            
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Wyszukaj miejsce...">
+                <i class="fas fa-search"></i>
+            </div>
+            
+            <div class="timeline">
+                <h3><i class="fas fa-history"></i> Oś Czasu</h3>
+                <input type="range" min="1400" max="2000" value="1800" class="timeline-slider" id="timelineSlider">
+                <div class="timeline-years">
+                    <span>1400</span>
+                    <span>1650</span>
+                    <span>2000</span>
+                </div>
+                <div id="timelineValue" style="text-align: center; margin-top: 5px; font-size: 0.9rem;">Rok: 1800</div>
+            </div>
+            
+            <div class="points-list" id="pointsList">
+                <!-- Punkty będą dodane dynamicznie -->
+            </div>
+        </div>
+        
+        <div class="map-container">
+            <div id="map"></div>
+            
+            <div class="map-controls">
+                <button class="control-btn" id="showRouteBtn">
+                    <i class="fas fa-route"></i> Pokaż trasę
+                </button>
+                <button class="control-btn" id="toggleSatelliteBtn">
+                    <i class="fas fa-satellite"></i> Widok satelitarny
+                </button>
+                <button class="control-btn" id="resetViewBtn">
+                    <i class="fas fa-home"></i> Resetuj widok
+                </button>
+                <button class="control-btn" id="followRouteBtn">
+                    <i class="fas fa-play"></i> Przejdź trasę
+                </button>
+            </div>
+            
+            <div class="route-info-map">
+                <h3><i class="fas fa-route"></i> Trasa Historyczna</h3>
+                <div class="route-stats">
+                    <div class="stat">
+                        <div class="stat-value">6</div>
+                        <div class="stat-label">Miejsc</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">4.2 km</div>
+                        <div class="stat-label">Długość</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">2h</div>
+                        <div class="stat-label">Czas</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="legend">
+                <h3>Legenda</h3>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: #8e24aa;"></div>
+                    <span>Miejsca historyczne</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: #43a047;"></div>
+                    <span>Przyroda</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: #e53935;"></div>
+                    <span>Miejsca bitew</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: #5d4037; border: 1px solid white;"></div>
+                    <span>Trasa piesza/rowerowa</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal z pełnym opisem -->
+    <div class="modal" id="introModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Trakt Napoleoński - Historia</h2>
+                <button class="close-btn" id="closeModalBtn">&times;</button>
+            </div>
+            <div class="modal-text">
+                <p>W przeszłych wiekach z Kamieńca w stronę stolicy prowadził trakt, który odegrał istotną rolę w dziejach regionu. Jego przebieg miał duże znaczenie nie tylko dla lokalnego handlu, ale i dla całego regionu a nawet państwa. Biegł od Warszawy w kierunku Kamieńca Mazowieckiego (dzisiejszego Kamieńczyka), gdzie znajdowała się przeprawa, umożliwiająca dalszą podróż w stronę Wielkiego Księstwa Litewskiego.</p>
+                
+                <p>Trakt istniał już od XVII wieku, na co wskazują znaleziska archeologiczne oraz mapy z tego okresu, choć prawdopodobnie powstał znacznie wcześniej (źródła wskazują tu na rok 1420). Gwałtowny rozwój handlu w XVI wieku sprzyjał modernizacji starych oraz wytyczaniu nowych traktów. W przypadku wspomnianej drogi dochodziła jeszcze potrzeba sprawnego zarządzania krajem. Wszak w XVI wieku trwale połączone w jedno państwo Korona i Litwa potrzebowały dogodnych połączeń między swymi stolicami – Wilnem i zyskującą na znaczeniu Warszawą.</p>
+                
+                <div class="modal-images">
+                    <div class="modal-image-container">
+                        <img src="https://iili.io/fB2ywYJ.md.png" alt="Mapa Fidest" class="modal-image">
+                        <div class="modal-image-caption">Mapa okolic Fidest z zaznaczonym traktem</div>
+                    </div>
+                    <div class="modal-image-container">
+                        <img src="https://iili.io/fB2yj2a.md.png" alt="Mapa Wólka" class="modal-image">
+                        <div class="modal-image-caption">Historyczna mapa Wólki i okolic</div>
+                    </div>
+                </div>
+                
+                <p>Traktem podróżowali kupcy, dostojnicy państwowi, ale nie tylko. Liczne stare artefakty potwierdzają, że droga często wykorzystywana była przez maszerujące armie, m.in. w okresie potopu szwedzkiego, ale również w wiekach późniejszych. Temu właśnie szlak zawdzięcza swą potoczną nazwę „traktu napoleońskiego”, gdyż miała tędy przechodzić m.in. maszerująca przeciw Rosji armia francuska.</p>
+                
+                <p>Również i później podążały tędy wojska powstańcze oraz, w okresie ostatniej wojny, oddziały partyzanckie. Uczęszczany trakt niewątpliwie miał wpływ na rozwój osadnictwa w regionie. W jego pobliżu w XVIII i XIX wieku powstały liczne miejscowości z niezwykle też często barwną historią.</p>
+                
+                <p>Dziś śladami tego historycznego traktu prowadzi pieszo-rowerowa trasa turystyczna, która pozwala odkrywać bogactwo historii i przyrody tego regionu. Trasa o długości około 4.2 km prowadzi przez 6 kluczowych punktów historycznych, związanych z dziejami traktu i okolicznych miejscowości.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal do powiększania obrazków -->
+    <div class="image-modal" id="imageModal">
+        <div class="image-modal-content">
+            <button class="image-modal-close" id="imageModalClose">&times;</button>
+            <img src="" alt="" class="image-modal-img" id="imageModalImg">
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // Inicjalizacja mapy
+        const map = L.map('map').setView([52.545, 21.49], 13);
+        
+        // Warstwy mapy
+        const osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+        
+        const satelliteLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+            attribution: 'Tiles &copy; Esri'
+        });
+
+        // Punkty na mapie w kolejności geograficznej (tworzące trasę)
+        const points = [
+            {
+                id: 1,
+                number: 1,
+                title: "Karczma murowana Fidest",
+                lat: 52.5456,
+                lng: 21.4842,
+                coordinates: "52°32'44\"N 21°29'03\"E",
+                description: "W połowie XIX wieku, przy wspomnianym trakcie, funkcjonowała jedyna na tej trasie murowana karczma, w której podróżni mogli odpocząć i posilić się przed dalszą drogą. Pozostałości w formie m.in. cegieł pozostały tam do dziś. Wedle legendy, zakopane być tam miały pieniądze, których dotąd, pomimo wielu profesjonalnych poszukiwań archeologicznych, nikt nie zdołał odnaleźć.",
+                type: "historical",
+                year: 1850,
+                category: "budynki",
+                image: null // Brak zdjęcia
+            },
+            {
+                id: 2,
+                number: 2,
+                title: "Kapliczka na sośnie",
+                lat: 52.5433,
+                lng: 21.4806,
+                coordinates: "52°32'36\"N 21°28'50\"E",
+                description: "Niedaleko znajduje się mały pomnik, który może się odnosić do bitwy pod Fidestem. Dawniej stać miał tam krzyż, który po latach się rozpadł. Pan Bala w 1907 postawił figurkę w miejsce dawnego krzyża z napisem, który mógł odczytać – stąd prawdopodobnie niekompletny napis. Bardziej prawdopodobne wyjaśnienie jest jednak o śmierci w tym miejscu rosyjskiego oficera. Kapliczka przebudowana w latach 60 już niestety z niekompletnym napisem. Pod figurką miała miejsce wymiana ognia pomiędzy spieszącymi na pomoc Warszawie Akowcami a Ukraińcami.",
+                type: "historical",
+                year: 1907,
+                category: "pomniki",
+                images: [
+                    "https://iili.io/fB2yEhB.md.jpg",
+                    "https://iili.io/fB2y1IV.md.jpg"
+                ]
+            },
+            {
+                id: 3,
+                number: 3,
+                title: "Stara kuźnia z XIX wieku przy trakcie",
+                lat: 52.5439,
+                lng: 21.4836,
+                coordinates: "52°32'38\"N 21°29'01\"E",
+                description: "W pobliżu karczmy funkcjonowała kuźnia, w której podróżni mogli naprawić wóz czy podkuć konie. W niedalekiej odległości znajduje się sosna, pod którą rzekomo miał odpoczywać Napoleon. Wedle jednej z legend, koń cesarza zgubił tu podkowę, którą następnie odnaleziono i przybito do sosny.",
+                type: "historical",
+                year: 1820,
+                category: "budynki",
+                image: null // Brak zdjęcia
+            },
+            {
+                id: 4,
+                number: 4,
+                title: "Kuźnia Fidest w Puszczy Kamienieckiej",
+                lat: 52.5533,
+                lng: 21.4981,
+                coordinates: "52°33'12\"N 21°29'53\"E",
+                description: "Kuźnia znajdująca się w sercu Puszczy Kamienieckiej, służąca miejscowej ludności oraz podróżnym przemierzającym trakt. Stanowiła ważny punkt na szlaku handlowym, gdzie można było naprawić uszkodzone wozy i podkuć konie przed dalszą podróżą.",
+                type: "nature",
+                year: 1850,
+                category: "budynki",
+                image: null // Brak zdjęcia
+            },
+            {
+                id: 5,
+                number: 5,
+                title: "Smolarnia XIX wiek",
+                lat: 52.5586,
+                lng: 21.5075,
+                coordinates: "52°33'31\"N 21°30'27\"E",
+                description: "Nieopodal krzyży znajduje się miejsce, w którym w XIX wieku znajdowała się jedna z największych w regionie wytwórnia smoły i terpentyny. Te produkty ówczesnego przemysłu drzewno - chemicznego służyły m.in. do budowy domów, łodzi i konserwacji sprzętu. Wartość rocznej produkcji wynosiła tu około 3400 srebrnych rubli, co jak na tamte czasy dla lokalnego, leśnego przedsiębiorstwa było znaczącą sumą.",
+                type: "historical",
+                year: 1850,
+                category: "przemysł",
+                image: null // Usunięte zdjęcie ze smolarni
+            },
+            {
+                id: 6,
+                number: 6,
+                title: "Krzyże Bitwa pod Fidestem",
+                lat: 52.5594,
+                lng: 21.5075,
+                coordinates: "52°33'34\"N 21°30'27\"E",
+                description: "Okoliczne lasy sprzyjały prowadzeniu działań partyzanckich. Podczas powstania styczniowego przemierzających tędy powstańców pod wodzą ppłk Józefa Jankowskiego zaatakowała kolumna wojsk carskich. Zaskoczeni powstańcy zmuszeni byli się wycofać. Część z nich szukała schronienia na pobliskich mokradłach. Poległych w tej potyczce powstańców pochowano na cmentarzu w Kamieńczyku. Samą zaś bitwę upamiętniają postawione tu przez społeczność krzyże.",
+                type: "battle",
+                year: 1863,
+                category: "miejsca_pamięci",
+                images: [
+                    "https://iili.io/fB2yVB1.md.jpg",
+                    "https://iili.io/fB2yGLP.md.jpg",
+                    "https://iili.io/fB2ykIp.md.jpg"
+                ]
+            }
+        ];
+
+        // Ikony dla różnych typów punktów
+        const iconColors = {
+            historical: '#8e24aa',
+            nature: '#43a047',
+            battle: '#e53935'
+        };
+
+        // Tworzenie markerów
+        const markers = [];
+        let routeVisible = false;
+        let routeLayer;
+        let currentLayer = osmLayer;
+        let routePlaying = false;
+        let currentRoutePoint = 0;
+
+        // Funkcja do tworzenia ikon z numerami
+        function createIcon(type, number) {
+            return L.divIcon({
+                html: `
+                    <div style="
+                        background-color: ${iconColors[type]}; 
+                        width: 30px; 
+                        height: 30px; 
+                        border-radius: 50%; 
+                        border: 3px solid white; 
+                        box-shadow: 0 0 5px rgba(0,0,0,0.5);
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        color: white;
+                        font-weight: bold;
+                        font-size: 14px;
+                    ">${number}</div>
+                `,
+                className: 'custom-marker',
+                iconSize: [30, 30],
+                iconAnchor: [15, 15]
+            });
+        }
+
+        // Funkcja do generowania linku do Google Maps
+        function generateGoogleMapsLink(lat, lng) {
+            return `https://www.google.com/maps?q=${lat},${lng}`;
+        }
+
+        // Funkcja do powiększania obrazków
+        function setupImageModal() {
+            const imageModal = document.getElementById('imageModal');
+            const imageModalImg = document.getElementById('imageModalImg');
+            const imageModalClose = document.getElementById('imageModalClose');
+            
+            // Dodanie obsługi kliknięcia na wszystkie obrazki
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('point-image') || e.target.classList.contains('popup-image')) {
+                    imageModalImg.src = e.target.src;
+                    imageModal.style.display = 'flex';
+                }
+            });
+            
+            imageModalClose.addEventListener('click', function() {
+                imageModal.style.display = 'none';
+            });
+            
+            imageModal.addEventListener('click', function(e) {
+                if (e.target === imageModal) {
+                    imageModal.style.display = 'none';
+                }
+            });
+        }
+
+        // Dodanie markerów do mapy
+        points.forEach(point => {
+            const marker = L.marker([point.lat, point.lng], { 
+                icon: createIcon(point.type, point.number)
+            }).addTo(map);
+            
+            // Tworzenie zawartości popupu
+            let popupContent = `
+                <div class="custom-popup">
+                    <div class="popup-title">
+                        <div class="popup-number">${point.number}</div>
+                        ${point.title}
+                    </div>`;
+            
+            // Dodawanie obrazków do popupu
+            if (point.images && point.images.length > 0) {
+                if (point.images.length === 1) {
+                    popupContent += `<img src="${point.images[0]}" alt="${point.title}" class="popup-image">`;
+                } else {
+                    popupContent += `<div class="popup-images-grid">`;
+                    point.images.forEach(img => {
+                        popupContent += `<img src="${img}" alt="${point.title}" class="popup-image">`;
+                    });
+                    popupContent += `</div>`;
+                }
+            } else if (point.image) {
+                popupContent += `<img src="${point.image}" alt="${point.title}" class="popup-image">`;
+            }
+            
+            popupContent += `
+                    <div class="popup-description">${point.description}</div>
+                    <div style="font-size: 0.8rem; color: #8d6e63; margin-top: 5px;">
+                        <div><i class="fas fa-calendar-alt"></i> Ok. ${point.year} r.</div>
+                        <div><i class="fas fa-map-marker-alt"></i> ${point.coordinates}</div>
+                        <div>
+                            <a href="${generateGoogleMapsLink(point.lat, point.lng)}" target="_blank" style="color: #8d6e63; text-decoration: none; display: inline-flex; align-items: center; gap: 5px;">
+                                <i class="fas fa-external-link-alt"></i> Otwórz w Google Maps
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            marker.bindPopup(popupContent);
+            
+            // Przechowywanie referencji do markera
+            markers.push({
+                id: point.id,
+                marker: marker,
+                data: point
+            });
+            
+            // Obsługa kliknięcia markera
+            marker.on('click', function() {
+                highlightPointInMenu(point.id);
+            });
+        });
+
+        // Rysowanie trasy pieszej/rowerowej (bardziej realistyczna trasa po drogach)
+        const routeCoordinates = [
+            [52.5456, 21.4842],  // Karczma
+            [52.5450, 21.4835],
+            [52.5445, 21.4825],
+            [52.5440, 21.4815],
+            [52.5435, 21.4810],
+            [52.5433, 21.4806],  // Kapliczka
+            [52.5435, 21.4815],
+            [52.5437, 21.4825],
+            [52.5439, 21.4836],  // Kuźnia
+            [52.5445, 21.4850],
+            [52.5455, 21.4865],
+            [52.5465, 21.4880],
+            [52.5475, 21.4895],
+            [52.5485, 21.4910],
+            [52.5495, 21.4925],
+            [52.5505, 21.4940],
+            [52.5515, 21.4955],
+            [52.5525, 21.4970],
+            [52.5533, 21.4981],  // Kuźnia w puszczy
+            [52.5540, 21.4990],
+            [52.5550, 21.5005],
+            [52.5560, 21.5020],
+            [52.5570, 21.5035],
+            [52.5580, 21.5050],
+            [52.5586, 21.5075],  // Smolarnia
+            [52.5594, 21.5075]   // Krzyże bitwy
+        ];
+
+        function drawRoute() {
+            if (routeLayer) {
+                map.removeLayer(routeLayer);
+            }
+            
+            routeLayer = L.polyline(routeCoordinates, {
+                color: '#5d4037',
+                weight: 6,
+                opacity: 0.8,
+                dashArray: '8, 8'
+            }).addTo(map);
+            
+            routeVisible = true;
+        }
+
+        function removeRoute() {
+            if (routeLayer) {
+                map.removeLayer(routeLayer);
+                routeVisible = false;
+            }
+        }
+
+        // Funkcja do automatycznego przechodzenia przez punkty trasy
+        function followRoute() {
+            if (routePlaying) return;
+            
+            routePlaying = true;
+            currentRoutePoint = 0;
+            document.getElementById('followRouteBtn').innerHTML = '<i class="fas fa-pause"></i> Pauza';
+            
+            function visitNextPoint() {
+                if (currentRoutePoint >= points.length || !routePlaying) {
+                    routePlaying = false;
+                    document.getElementById('followRouteBtn').innerHTML = '<i class="fas fa-play"></i> Przejdź trasę';
+                    return;
+                }
+                
+                const point = points[currentRoutePoint];
+                highlightPointInMenu(point.id);
+                map.setView([point.lat, point.lng], 16);
+                
+                const marker = markers.find(m => m.id === point.id).marker;
+                marker.openPopup();
+                
+                currentRoutePoint++;
+                setTimeout(visitNextPoint, 5000); // 5 sekund na każdy punkt
+            }
+            
+            visitNextPoint();
+        }
+
+        function stopRoute() {
+            routePlaying = false;
+            document.getElementById('followRouteBtn').innerHTML = '<i class="fas fa-play"></i> Przejdź trasę';
+        }
+
+        // Dynamiczne tworzenie listy punktów (BEZ WSPÓŁRZĘDNYCH I LINKÓW)
+        function renderPointsList() {
+            const pointsList = document.getElementById('pointsList');
+            pointsList.innerHTML = '';
+            
+            points.forEach(point => {
+                let imagesHtml = '';
+                
+                // Dodawanie obrazków do punktu w menu
+                if (point.images && point.images.length > 0) {
+                    if (point.images.length === 1) {
+                        imagesHtml += `<img src="${point.images[0]}" alt="${point.title}" class="point-image">`;
+                    } else {
+                        imagesHtml += `<div class="point-images-grid">`;
+                        point.images.forEach(img => {
+                            imagesHtml += `<img src="${img}" alt="${point.title}" class="point-image">`;
+                        });
+                        imagesHtml += `</div>`;
+                    }
+                } else if (point.image) {
+                    imagesHtml += `<img src="${point.image}" alt="${point.title}" class="point-image">`;
+                }
+                
+                const pointElement = `
+                    <div class="point-header" data-id="${point.id}">
+                        <div class="point-title">
+                            <div class="point-number">${point.number}</div>
+                            ${point.title}
+                        </div>
+                        <div class="arrow">▼</div>
+                    </div>
+                    <div class="point-content" data-id="${point.id}">
+                        <div class="point-meta">
+                            <div class="meta-item">
+                                <i class="fas fa-calendar-alt"></i>
+                                <span>Ok. ${point.year} r.</span>
+                            </div>
+                            <div class="meta-item">
+                                <i class="fas fa-tag"></i>
+                                <span>${getCategoryName(point.category)}</span>
+                            </div>
+                        </div>
+                        <div class="point-description">${point.description}</div>
+                        ${imagesHtml}
+                    </div>
+                `;
+                
+                pointsList.innerHTML += pointElement;
+            });
+            
+            // Dodanie obsługi kliknięć po renderowaniu
+            addPointHeaderListeners();
+        }
+
+        function getCategoryName(category) {
+            const categories = {
+                'budynki': 'Budynki',
+                'pomniki': 'Pomniki',
+                'miejsca_pamięci': 'Miejsca pamięci',
+                'przemysł': 'Przemysł'
+            };
+            return categories[category] || category;
+        }
+
+        // Obsługa kliknięcia w nagłówki punktów
+        function addPointHeaderListeners() {
+            document.querySelectorAll('.point-header').forEach(header => {
+                header.addEventListener('click', function() {
+                    const pointId = parseInt(this.getAttribute('data-id'));
+                    const content = document.querySelector(`.point-content[data-id="${pointId}"]`);
+                    const arrow = this.querySelector('.arrow');
+                    
+                    // Rozwijanie/zwijanie zawartości
+                    if (content.classList.contains('expanded')) {
+                        content.classList.remove('expanded');
+                        arrow.classList.remove('expanded');
+                        this.classList.remove('active');
+                    } else {
+                        // Zamykanie wszystkich innych otwartych sekcji
+                        document.querySelectorAll('.point-content').forEach(c => {
+                            c.classList.remove('expanded');
+                        });
+                        document.querySelectorAll('.point-header').forEach(h => {
+                            h.classList.remove('active');
+                            h.querySelector('.arrow').classList.remove('expanded');
+                        });
+                        
+                        // Otwieranie wybranej sekcji
+                        content.classList.add('expanded');
+                        arrow.classList.add('expanded');
+                        this.classList.add('active');
+                        
+                        // Przewijanie do rozwiniętej sekcji
+                        content.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    }
+                    
+                    // Przejście do punktu na mapie
+                    const point = points.find(p => p.id === pointId);
+                    if (point) {
+                        map.setView([point.lat, point.lng], 16);
+                        
+                        // Otwarcie popupu
+                        const marker = markers.find(m => m.id === pointId).marker;
+                        marker.openPopup();
+                    }
+                });
+            });
+        }
+
+        // Funkcja do podświetlania punktu w menu
+        function highlightPointInMenu(pointId) {
+            document.querySelectorAll('.point-header').forEach(header => {
+                header.classList.remove('active');
+                if (parseInt(header.getAttribute('data-id')) === pointId) {
+                    header.classList.add('active');
+                    
+                    // Rozwinięcie zawartości jeśli jest zwinięta
+                    const content = document.querySelector(`.point-content[data-id="${pointId}"]`);
+                    const arrow = header.querySelector('.arrow');
+                    if (!content.classList.contains('expanded')) {
+                        content.classList.add('expanded');
+                        arrow.classList.add('expanded');
+                    }
+                    
+                    // Przewijanie do aktywnego punktu
+                    header.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            });
+        }
+
+        // Wyszukiwanie
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            
+            markers.forEach(markerObj => {
+                const point = markerObj.data;
+                const marker = markerObj.marker;
+                
+                if (point.title.toLowerCase().includes(searchTerm) || 
+                    point.description.toLowerCase().includes(searchTerm)) {
+                    marker.setOpacity(1);
+                } else {
+                    marker.setOpacity(0.3);
+                }
+            });
+        });
+
+        // Oś czasu
+        const timelineSlider = document.getElementById('timelineSlider');
+        const timelineValue = document.getElementById('timelineValue');
+        
+        timelineSlider.addEventListener('input', function() {
+            const year = parseInt(this.value);
+            timelineValue.textContent = `Rok: ${year}`;
+            
+            markers.forEach(markerObj => {
+                const point = markerObj.data;
+                const marker = markerObj.marker;
+                
+                if (point.year <= year) {
+                    marker.setOpacity(1);
+                } else {
+                    marker.setOpacity(0.3);
+                }
+            });
+        });
+
+        // Modal functions
+        const modal = document.getElementById('introModal');
+        const readMoreBtn = document.getElementById('readMoreBtn');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        
+        readMoreBtn.addEventListener('click', function() {
+            modal.style.display = 'flex';
+        });
+        
+        closeModalBtn.addEventListener('click', function() {
+            modal.style.display = 'none';
+        });
+        
+        window.addEventListener('click', function(event) {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+
+        // Kontrolki mapy
+        document.getElementById('showRouteBtn').addEventListener('click', function() {
+            if (routeVisible) {
+                removeRoute();
+                this.innerHTML = '<i class="fas fa-route"></i> Pokaż trasę';
+            } else {
+                drawRoute();
+                this.innerHTML = '<i class="fas fa-route"></i> Ukryj trasę';
+            }
+        });
+
+        document.getElementById('toggleSatelliteBtn').addEventListener('click', function() {
+            if (currentLayer === osmLayer) {
+                map.removeLayer(osmLayer);
+                satelliteLayer.addTo(map);
+                currentLayer = satelliteLayer;
+                this.innerHTML = '<i class="fas fa-map"></i> Widok mapy';
+            } else {
+                map.removeLayer(satelliteLayer);
+                osmLayer.addTo(map);
+                currentLayer = osmLayer;
+                this.innerHTML = '<i class="fas fa-satellite"></i> Widok satelitarny';
+            }
+        });
+
+        document.getElementById('resetViewBtn').addEventListener('click', function() {
+            map.setView([52.545, 21.49], 13);
+        });
+
+        document.getElementById('followRouteBtn').addEventListener('click', function() {
+            if (routePlaying) {
+                stopRoute();
+            } else {
+                followRoute();
+            }
+        });
+
+        // Inicjalizacja
+        renderPointsList();
+        setupImageModal();
+        L.control.scale({ imperial: false }).addTo(map);
+        
+        // Rysowanie trasy na starcie
+        drawRoute();
+        document.getElementById('showRouteBtn').innerHTML = '<i class="fas fa-route"></i> Ukryj trasę';
+    </script>
+</body>
+</html>
