@@ -365,9 +365,7 @@
             color: white;
             z-index: 1000;
             box-shadow: 0 0 10px rgba(0,0,0,0.3);
-        }
-        .legend span {
-            
+            transition: all 0.3s ease;
         }
         
         .legend h3 {
@@ -437,6 +435,7 @@
             z-index: 1000;
             box-shadow: 0 0 10px rgba(0,0,0,0.3);
             width: 200px;
+            transition: all 0.3s ease;
         }
         
         .route-info-map h3 {
@@ -585,6 +584,7 @@
             cursor: pointer;
         }
         
+        /* Mobile styles */
         @media (max-width: 768px) {
             .container {
                 flex-direction: column;
@@ -602,6 +602,38 @@
             .route-info-map {
                 width: 180px;
                 padding: 10px;
+                bottom: 10px;
+                left: 10px;
+            }
+            
+            .legend {
+                bottom: 10px;
+                right: 10px;
+                padding: 8px;
+                max-width: 150px;
+            }
+            
+            .legend h3 {
+                font-size: 0.9rem;
+                margin-bottom: 5px;
+            }
+            
+            .legend-item {
+                margin-bottom: 3px;
+            }
+            
+            .legend-color {
+                width: 15px;
+                height: 15px;
+                margin-right: 5px;
+            }
+            
+            .legend span {
+                font-size: 0.8rem;
+            }
+            
+            .map-controls {
+                display: none; /* Ukrywamy kontrolki na urządzeniach mobilnych */
             }
             
             .modal-content {
@@ -616,6 +648,38 @@
             .point-images-grid,
             .popup-images-grid {
                 grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .route-info-map {
+                width: 150px;
+                padding: 8px;
+            }
+            
+            .route-info-map h3 {
+                font-size: 0.9rem;
+            }
+            
+            .stat-value {
+                font-size: 1rem;
+            }
+            
+            .stat-label {
+                font-size: 0.7rem;
+            }
+            
+            .legend {
+                max-width: 130px;
+                padding: 6px;
+            }
+            
+            .legend h3 {
+                font-size: 0.8rem;
+            }
+            
+            .legend span {
+                font-size: 0.7rem;
             }
         }
     </style>
@@ -731,7 +795,7 @@
                     </div>
                     <div class="modal-image-container">
                         <img src="https://iili.io/fB2yj2a.md.png" alt="Mapa Wólka" class="modal-image">
-                        <div class="modal-image-caption">Historyczna mapa Wólki i okolic</div>
+                        <div class="modal-image-caption">Historyczna mapa Wólka i okolic</div>
                     </div>
                 </div>
                 
@@ -739,7 +803,7 @@
                 
                 <p>Również i później podążały tędy wojska powstańcze oraz, w okresie ostatniej wojny, oddziały partyzanckie. Uczęszczany trakt niewątpliwie miał wpływ na rozwój osadnictwa w regionie. W jego pobliżu w XVIII i XIX wieku powstały liczne miejscowości z niezwykle też często barwną historią.</p>
                 
-                <p>Dziś śladami tego historycznego traktu prowadzi pieszo-rowerowa trasa turystyczna, która pozwala odkrywać bogactwo historii i przyrody tego regionu. Trasa o długości około 4.2 km prowadzi przez 6 kluczowych punktów historycznych, związanych z dziejami traktu i okolicznych miejscowości.</p>
+                <p>Dziś śladami tego historycznego traktu prowadzi pieszo-rowerowa trasa turystyczna, która pozwala odkrywać bogactwo historii i przyrody tego regionu. Trasa o długości około 4.2 km prowadzi przez 6 kluczowych punktów historycznych, związanych z dziejami traktu и okolicznych miejscowości.</p>
             </div>
         </div>
     </div>
