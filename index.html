@@ -22,7 +22,7 @@
         }
         
         h1, h2, h3, .point-title {
-            font-family: 'Open Sans', serif;
+            font-family: 'Merriweather', serif;
         }
         
         .container {
@@ -729,15 +729,15 @@
                 <h3><i class="fas fa-route"></i> Trasa Historyczna</h3>
                 <div class="route-stats">
                     <div class="stat">
-                        <div class="stat-value">6</div>
+                        <div class="stat-value">7</div>
                         <div class="stat-label">Miejsc</div>
                     </div>
                     <div class="stat">
-                        <div class="stat-value">4.2 km</div>
+                        <div class="stat-value">5.1 km</div>
                         <div class="stat-label">Długość</div>
                     </div>
                     <div class="stat">
-                        <div class="stat-value">2h</div>
+                        <div class="stat-value">2.5h</div>
                         <div class="stat-label">Czas</div>
                     </div>
                 </div>
@@ -792,7 +792,7 @@
                 
                 <p>Również i później podążały tędy wojska powstańcze oraz, w okresie ostatniej wojny, oddziały partyzanckie. Uczęszczany trakt niewątpliwie miał wpływ na rozwój osadnictwa w regionie. W jego pobliżu w XVIII i XIX wieku powstały liczne miejscowości z niezwykle też często barwną historią.</p>
                 
-                <p>Dziś śladami tego historycznego traktu prowadzi pieszo-rowerowa trasa turystyczna, która pozwala odkrywać bogactwo historii i przyrody tego regionu. Trasa o długości około 4.2 km prowadzi przez 6 kluczowych punktów historycznych, związanych z dziejami traktu i okolicznych miejscowości.</p>
+                <p>Dziś śladami tego historycznego traktu prowadzi pieszo-rowerowa trasa turystyczna, która pozwala odkrywać bogactwo historii i przyrody tego regionu. Trasa o długości około 5.1 km prowadzi przez 7 kluczowych punktów historycznych, związanych z dziejami traktu i okolicznych miejscowości.</p>
             </div>
         </div>
     </div>
@@ -901,9 +901,23 @@
                 year: 1863,
                 category: "miejsca_pamięci",
                 images: [
-                    "https://iili.io/fB2yVB1.md.jpg",
-                    "https://iili.io/fB2yGLP.md.jpg",
+          
                     "https://iili.io/fB2ykIp.md.jpg"
+                ]
+            },
+            {
+                id: 7,
+                number: 7,
+                title: "Miejsce urodzenia matki kard. Stefana Wyszyńskiego",
+                lat: 52.5689,
+                lng: 21.5251,
+                coordinates: "52°34'08.0\"N 21°31'30.3\"E",
+                description: "Na zachód od traktu znajduje się kamienny postument, upamiętniający miejsce urodzenia matki kard. Stefana Wyszyńskiego – Prymasa 1000 – lecia. Julianna Karp przyszła na świat w 1877 roku w Fideście Starym. Ta część miejscowości już dziś nie istnieje. Decyzją nadleśnictwa tamtejsze domy zostały rozebrane lub przeniesione.",
+                type: "historical",
+                year: 1877,
+                category: "miejsca_pamięci",
+                images: [
+                    "https://iili.io/fB2yGLP.md.jpg"
                 ]
             }
         ];
@@ -1034,7 +1048,7 @@
             });
         });
 
-        // Rysowanie trasy
+        // Rysowanie trasy - poprawiona bez punktu 8
         const routeCoordinates = [
             [52.5456, 21.4842],
             [52.5450, 21.4835],
@@ -1061,7 +1075,16 @@
             [52.5570, 21.5035],
             [52.5580, 21.5050],
             [52.5586, 21.5075],
-            [52.5594, 21.5075]
+            [52.5594, 21.5075],
+            [52.5600, 21.5100],
+            [52.5610, 21.5120],
+            [52.5620, 21.5140],
+            [52.5630, 21.5160],
+            [52.5640, 21.5180],
+            [52.5650, 21.5200],
+            [52.5660, 21.5220],
+            [52.5670, 21.5240],
+            [52.5689, 21.5251]
         ];
 
         function drawRoute() {
